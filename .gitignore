@@ -13,6 +13,25 @@
 # testing
 /coverage
 
+# ✅ Node
+node_modules
+.next
+.env
+.env.local
+.env.production
+*.log
+
+# ✅ OS-specific
+.DS_Store
+
+# ✅ IDEs
+.vscode
+.idea
+
+# ✅ Keys or secrets
+*.key
+*.pem
+
 # next.js
 /.next/
 /out/
