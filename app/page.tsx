@@ -1,103 +1,163 @@
-import Image from "next/image";
+"use client";
+
+import React, { useEffect, useRef, useState } from "react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import PotBalance from "@/components/PotBalance";
+import WinnerDisplay from "@/components/WinnerDisplay";
+import GuessForm from "@/components/GuessForm";
+import AdminPanel from "@/components/AdminPanel";
+import AudioControl from "@/components/AudioPlayer";
+import { useAccount, useContractRead } from "wagmi";
+import toast from "react-hot-toast";
+import { RIDDLE_GAME_ABI, RIDDLE_GAME_ADDRESS } from "@/constants/abi";
+import Head from "next/head";
+
+const YOUR_WALLET = "0xc1B78548B0Fc3D7bC94AbEe1AfDbE67899aeB995";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [gameStarted, setGameStarted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const { address } = useAccount();
+  const [currentRiddle, setCurrentRiddle] = useState("Loading...");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+  // 🔄 Fetch riddle from contract (watch live)
+  const { data: riddleData, error: riddleError } = useContractRead({
+    address: RIDDLE_GAME_ADDRESS,
+    abi: RIDDLE_GAME_ABI,
+    functionName: "riddle", // ✅ lowercase is correct
+    watch: true,
+  });
+
+  useEffect(() => {
+    if (riddleError) {
+      console.error("Failed to fetch riddle:", riddleError);
+      setCurrentRiddle("Error loading riddle.");
+    } else if (riddleData) {
+      setCurrentRiddle(riddleData as string);
+    }
+  }, [riddleData, riddleError]);
+
+  // 🔊 Start music on Enter
+  const startGame = () => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.volume = 0;
+      audio.play().then(() => {
+        let volume = 0;
+        const fade = setInterval(() => {
+          volume += 0.05;
+          audio.volume = Math.min(volume, 1);
+          if (volume >= 1) clearInterval(fade);
+        }, 200);
+      }).catch(console.error);
+    }
+    setGameStarted(true);
+  };
+
+  // 🚨 Detect DevTools for non-admins
+  useEffect(() => {
+    if (!address || address.toLowerCase() === YOUR_WALLET.toLowerCase()) return;
+    const detector = setInterval(() => {
+      const devtoolsOpen =
+        window.outerWidth - window.innerWidth > 160 ||
+        window.outerHeight - window.innerHeight > 160;
+      if (devtoolsOpen) {
+        toast.error("🚨 DevTools detected. Admin panel is restricted.");
+        clearInterval(detector);
+      }
+    }, 1000);
+    return () => clearInterval(detector);
+  }, [address]);
+
+  return (
+    <>
+      <Head>
+        <link rel="icon" href="/favicon.png" />
+        <title>Orbique</title>
+      </Head>
+
+      <main className="min-h-screen w-full relative overflow-hidden font-sans">
+        {/* 🎬 Background */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="fixed top-0 left-0 w-full h-full object-cover -z-10"
+        >
+          <source src="/thunderstorm.mp4" type="video/mp4" />
+        </video>
+
+        {/* 🎵 Background Music */}
+        <audio ref={audioRef} src="/Nightcall.mp3" loop preload="auto" />
+
+        {/* 🎮 Splash Screen */}
+        {!gameStarted ? (
+          <div className="flex flex-col items-center justify-center h-screen text-white text-center space-y-6 bg-black/60">
+            <h1 className="text-5xl font-extrabold tracking-widest">
+              ORB<span className="text-purple-400">IQUE</span>
+            </h1>
+            <p className="text-xl">Are you good with riddles? Let’s find out.</p>
+            <button
+              onClick={startGame}
+              className="px-6 py-3 bg-purple-600 hover:bg-purple-800 text-white rounded-full text-lg shadow-md"
+            >
+              Enter
+            </button>
+          </div>
+        ) : (
+          <>
+            {/* 🌩️ Title */}
+            <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-30">
+              <h1 className="text-6xl font-extrabold text-white tracking-wider font-serif drop-shadow-lg">
+                ORBIQUE
+              </h1>
+            </div>
+
+            {/* 💡 Main Game Section */}
+            <div className="flex items-center justify-center h-screen px-4">
+              <div className="w-full max-w-4xl bg-white/10 backdrop-blur-lg p-10 rounded-2xl border border-white/20 text-white shadow-2xl">
+                {/* 💰 Pot & 🎉 Winner */}
+                <div className="flex justify-between items-center text-lg mb-6 font-medium">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-yellow-400">
+                      💰 <span className="font-semibold">Current Pot:</span>
+                    </span>
+                    <PotBalance />
+                  </div>
+                  <WinnerDisplay />
+                </div>
+
+                {/* ❓ Riddle */}
+                <div className="text-center text-2xl font-bold mb-8 whitespace-pre-line">
+                  {currentRiddle}
+                </div>
+
+                {/* 🔤 Guess Form */}
+                <div className="mb-6">
+                  <GuessForm />
+                </div>
+
+                {/* 🔧 Admin Panel */}
+                {address?.toLowerCase() === YOUR_WALLET.toLowerCase() && (
+                  <div className="mt-6 border-t border-white/20 pt-4">
+                    <h3 className="text-lg font-bold text-purple-300 mb-2">Admin Panel</h3>
+                    <AdminPanel onRiddleUpdated={setCurrentRiddle} />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* 🔊 Audio Player */}
+            <AudioControl audioRef={audioRef} />
+
+            {/* 👛 Wallet Connect */}
+            <div className="absolute top-6 right-6 z-30">
+              <ConnectButton />
+            </div>
+          </>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    </>
   );
 }

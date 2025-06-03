@@ -1,0 +1,39 @@
+"use client";
+import { useContractRead } from "wagmi";
+import { RIDDLE_GAME_ABI, RIDDLE_GAME_ADDRESS } from "@/constants/abi";
+
+export default function WinnerDisplay() {
+  const { data, isLoading, error } = useContractRead({
+    address: RIDDLE_GAME_ADDRESS,
+    abi: RIDDLE_GAME_ABI,
+    functionName: "winner",
+    watch: true,
+  });
+
+  if (isLoading) return <p className="text-center mt-4">Loading winner...</p>;
+
+  if (error) {
+    console.error("Error loading winner:", error);
+    return (
+      <p className="text-center text-red-500 mt-4">
+        No winner yet or unable to read winner.
+      </p>
+    );
+  }
+
+  const shortenAddress = (address: string) =>
+    `${address.slice(0, 6)}...${address.slice(-4)}`;
+
+  return (
+    <div className="text-center mt-6">
+      <h2 className="text-lg font-semibold">🎉 Last Winner:</h2>
+      <p className="text-indigo-600 mt-1">
+        {data && data !== "0x0000000000000000000000000000000000000000"
+          ? shortenAddress(data as string)
+          : "No winner yet."}
+      </p>
+    </div>
+  );
+}
+
+
