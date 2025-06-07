@@ -236,7 +236,7 @@ useEffect(() => {
               </div>
             </div>
 
-            <footer className="sm:hidden w-full mt-4 mb-10 flex flex-col items-center text-white opacity-70 text-sm z-10 relative">
+            <footer className="sm:hidden w-full mt-8 mb-10 flex flex-col items-center text-white opacity-70 text-sm z-10 relative">
   <p className="mb-1">Built by Vendetta</p>
   <a
     href="https://x.com/GMbalenciaga"

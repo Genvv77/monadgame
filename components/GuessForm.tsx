@@ -77,8 +77,9 @@ const GuessForm = () => {
   value={guess}
   onChange={(e) => setGuess(e.target.value)}
   placeholder="Enter your guess"
-  className="appearance-none text-center w-full px-4 py-3 text-white text-base rounded-md border border-white/30 bg-zinc-900/50 backdrop-blur-md placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-500"
+  className="text-center w-full px-4 py-3 text-white text-base rounded-md border border-white/20 bg-black/30 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-500"
 />
+
 
 
       <button
