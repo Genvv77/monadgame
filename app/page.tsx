@@ -236,10 +236,10 @@ useEffect(() => {
               </div>
             </div>
 
-            <footer className="sm:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-full max-w-xs flex flex-col items-center text-white opacity-60 z-30">
-  <p className="text-sm mb-1">Built by Vendetta</p>
+            <footer className="sm:hidden w-full mt-4 mb-10 flex flex-col items-center text-white opacity-70 text-sm z-10 relative">
+  <p className="mb-1">Built by Vendetta</p>
   <a
-    href="https://X.com/GMbalenciaga"
+    href="https://x.com/GMbalenciaga"
     target="_blank"
     rel="noopener noreferrer"
     className="hover:opacity-100 transition-opacity duration-200"
@@ -247,6 +247,9 @@ useEffect(() => {
     <img src="/x-logo.png" alt="Twitter Logo" className="w-5 h-5 mt-1" />
   </a>
 </footer>
+
+
+
           </div>
 
           <footer className="hidden sm:flex fixed bottom-4 left-1/2 -translate-x-1/2 flex-col items-center text-white opacity-60 z-40">
