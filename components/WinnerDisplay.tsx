@@ -10,12 +10,12 @@ export default function WinnerDisplay() {
     watch: true,
   });
 
-  if (isLoading) return <p className="text-center mt-4">Loading winner...</p>;
+  if (isLoading) return <p className="text-sm text-white">Loading winner...</p>;
 
   if (error) {
     console.error("Error loading winner:", error);
     return (
-      <p className="text-center text-red-500 mt-4">
+      <p className="text-sm text-red-500">
         No winner yet or unable to read winner.
       </p>
     );
@@ -25,15 +25,13 @@ export default function WinnerDisplay() {
     `${address.slice(0, 6)}...${address.slice(-4)}`;
 
   return (
-    <div className="text-center mt-6">
-      <h2 className="text-lg font-semibold">🎉 Last Winner:</h2>
-      <p className="text-indigo-600 mt-1">
-        {data && data !== "0x0000000000000000000000000000000000000000"
-          ? shortenAddress(data as string)
-          : "No winner yet."}
-      </p>
+    <div className="text-right text-sm">
+      <span className="text-indigo-400">{data && data !== "0x0000000000000000000000000000000000000000"
+        ? shortenAddress(data as string)
+        : "No winner yet."}</span>
     </div>
   );
 }
+
 
 

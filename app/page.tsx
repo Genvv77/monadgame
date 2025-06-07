@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import PotBalance from "@/components/PotBalance";
 import WinnerDisplay from "@/components/WinnerDisplay";
@@ -11,20 +11,44 @@ import { useAccount, useContractRead } from "wagmi";
 import toast from "react-hot-toast";
 import { RIDDLE_GAME_ABI, RIDDLE_GAME_ADDRESS } from "@/constants/abi";
 import Head from "next/head";
+import NavMenu from "@/components/NavMenu";
+import { motion } from "framer-motion";
+import { Wallet } from "lucide-react";
 
 const YOUR_WALLET = "0xc1B78548B0Fc3D7bC94AbEe1AfDbE67899aeB995";
 
 export default function Home() {
   const [gameStarted, setGameStarted] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { address } = useAccount();
   const [currentRiddle, setCurrentRiddle] = useState("Loading...");
+  const [isHydrated, setIsHydrated] = useState(false);
+const [isLoading, setIsLoading] = useState(false);
+const [loadingText, setLoadingText] = useState("Loading");
+useEffect(() => {
+  let dots = 1;
+  setLoadingText("Loading.");
+  const interval = setInterval(() => {
+    dots = (dots + 1) % 4;
+    setLoadingText("Loading" + ".".repeat(dots));
+  }, 500);
 
-  // 🔄 Fetch riddle from contract (watch live)
+  const timer = setTimeout(() => {
+    setIsHydrated(true);
+  }, 1500);
+
+  return () => {
+    clearInterval(interval);
+    clearTimeout(timer);
+  };
+}, []);
+
+
+
   const { data: riddleData, error: riddleError } = useContractRead({
     address: RIDDLE_GAME_ADDRESS,
     abi: RIDDLE_GAME_ABI,
-    functionName: "riddle", // ✅ lowercase is correct
+    functionName: "riddle",
     watch: true,
   });
 
@@ -37,24 +61,23 @@ export default function Home() {
     }
   }, [riddleData, riddleError]);
 
-  // 🔊 Start music on Enter
   const startGame = () => {
-    const audio = audioRef.current;
-    if (audio) {
-      audio.volume = 0;
-      audio.play().then(() => {
-        let volume = 0;
-        const fade = setInterval(() => {
-          volume += 0.05;
-          audio.volume = Math.min(volume, 1);
-          if (volume >= 1) clearInterval(fade);
-        }, 200);
-      }).catch(console.error);
-    }
-    setGameStarted(true);
+    setIsLoading(true);
+    setTimeout(() => {
+      setGameStarted(true);
+    }, 1000); // Wait for animation, then start game
   };
 
-  // 🚨 Detect DevTools for non-admins
+  useEffect(() => {
+    if (gameStarted) {
+      const timer = setTimeout(() => {
+        window.dispatchEvent(new Event("audio-autoplay-start"));
+        setIsLoading(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [gameStarted]);
+
   useEffect(() => {
     if (!address || address.toLowerCase() === YOUR_WALLET.toLowerCase()) return;
     const detector = setInterval(() => {
@@ -76,88 +99,187 @@ export default function Home() {
         <title>Orbique</title>
       </Head>
 
-      <main className="min-h-screen w-full relative overflow-hidden font-sans">
-        {/* 🎬 Background */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="fixed top-0 left-0 w-full h-full object-cover -z-10"
-        >
-          <source src="/thunderstorm.mp4" type="video/mp4" />
-        </video>
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="fixed top-0 left-0 w-full h-full object-cover -z-10"
+      >
+        <source src="/thunderstorm.mp4" type="video/mp4" />
+      </video>
+      <div className="sm:hidden fixed top-0 left-0 w-full h-full bg-black/40 z-[-1]" />
 
-        {/* 🎵 Background Music */}
-        <audio ref={audioRef} src="/Nightcall.mp3" loop preload="auto" />
+      {!gameStarted ? (
+        <div className="flex flex-col items-center justify-center h-screen text-white text-center space-y-6 bg-black/60">
+          <h1 className="text-5xl font-extrabold tracking-widest">
+            ORB<span className="text-purple-400">IQUE</span>
+          </h1>
+          <p className="text-lg sm:text-xl tracking-normal font-sans text-white/90">
+            Are you good with riddles? Let’s find out.
+          </p>
+          <button
+  onClick={() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setGameStarted(true);
+      window.dispatchEvent(new Event("audio-autoplay-start"));
+      setIsLoading(false);
+    }, 500); // Short delay for smoother transition
+  }}
+  disabled={!isHydrated || isLoading}
+  className={`px-6 py-3 text-white rounded-full text-lg tracking-wider shadow-md transition-all duration-300 flex items-center justify-center gap-2 ${
+    isHydrated && !isLoading
+      ? "bg-purple-600 hover:bg-purple-800 cursor-pointer"
+      : "bg-purple-900 cursor-not-allowed opacity-60"
+  }`}
+>
+  {isLoading ? (
+    <motion.div
+      initial={{ opacity: 0, rotate: 0 }}
+      animate={{ opacity: 1, rotate: 360 }}
+      transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+      className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+    />
+  ) : isHydrated ? (
+    "ENTER"
+  ) : (
+    loadingText
+  )}
+</button>
 
-        {/* 🎮 Splash Screen */}
-        {!gameStarted ? (
-          <div className="flex flex-col items-center justify-center h-screen text-white text-center space-y-6 bg-black/60">
-            <h1 className="text-5xl font-extrabold tracking-widest">
-              ORB<span className="text-purple-400">IQUE</span>
+
+        </div>
+      ) : (
+        <main className="w-full relative overflow-x-hidden font-sans">
+          <div className="absolute top-4 left-0 right-0 z-50 w-full px-4 flex items-center justify-between sm:top-9">
+            <h1 className="text-3xl sm:text-6xl font-extrabold text-white font-serif drop-shadow-lg text-left sm:text-center sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 w-full sm:w-auto">
+              ORBIQUE
             </h1>
-            <p className="text-xl">Are you good with riddles? Let’s find out.</p>
-            <button
-              onClick={startGame}
-              className="px-6 py-3 bg-purple-600 hover:bg-purple-800 text-white rounded-full text-lg shadow-md"
-            >
-              Enter
-            </button>
-          </div>
-        ) : (
-          <>
-            {/* 🌩️ Title */}
-            <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-30">
-              <h1 className="text-6xl font-extrabold text-white tracking-wider font-serif drop-shadow-lg">
-                ORBIQUE
-              </h1>
-            </div>
+            <div className="sm:mt-0 sm:ml-auto flex items-center space-x-2 relative">
+              <ConnectButton.Custom>
+                {({ account, openAccountModal, openConnectModal, authenticationStatus, mounted }) => {
+                  const ready = mounted && authenticationStatus !== "loading";
+                  const connected =
+                    ready &&
+                    account &&
+                    (!authenticationStatus || authenticationStatus === "authenticated");
 
-            {/* 💡 Main Game Section */}
-            <div className="flex items-center justify-center h-screen px-4">
-              <div className="w-full max-w-4xl bg-white/10 backdrop-blur-lg p-10 rounded-2xl border border-white/20 text-white shadow-2xl">
-                {/* 💰 Pot & 🎉 Winner */}
-                <div className="flex justify-between items-center text-lg mb-6 font-medium">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-yellow-400">
-                      💰 <span className="font-semibold">Current Pot:</span>
-                    </span>
-                    <PotBalance />
-                  </div>
+                  return (
+                    <div
+                      {...(!ready && {
+                        "aria-hidden": true,
+                        style: {
+                          opacity: 0,
+                          pointerEvents: "none",
+                          userSelect: "none",
+                        },
+                      })}
+                    >
+                      <button
+                        onClick={connected ? openAccountModal : openConnectModal}
+                        className="bg-purple-600 hover:bg-purple-800 text-white font-medium rounded-lg px-3.5 py-2.5 text-sm flex items-center justify-center"
+                      >
+                        <Wallet className="sm:hidden w-5 h-5" />
+                        <span className="hidden sm:inline">
+                          {connected ? account.displayName : "Connect Wallet"}
+                        </span>
+                      </button>
+                    </div>
+                  );
+                }}
+              </ConnectButton.Custom>
+              <NavMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+            </div>
+          </div>
+
+          <div className="pt-32 sm:pt-44 pb-0 flex flex-col items-center justify-start px-4 sm:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: -20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              whileHover={{ scale: 1.01 }}
+              className="glow-border w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl bg-white/10 backdrop-blur-lg p-4 rounded-xl border border-white/20 text-white mb-6 shadow-xl transition-transform duration-300"
+            >
+              <div className="flex justify-between text-sm sm:text-base font-medium">
+                <div className="flex items-center gap-2">
+                  
+                  <span>Pot:</span>
+                  <PotBalance />
+                </div>
+                <div className="flex flex-col items-end leading-tight">
+                  <span>Last Winner:</span>
                   <WinnerDisplay />
                 </div>
+              </div>
+            </motion.div>
 
-                {/* ❓ Riddle */}
-                <div className="text-center text-2xl font-bold mb-8 whitespace-pre-line">
-                  {currentRiddle}
+            <div className="w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl bg-white/10 backdrop-blur-lg p-8 sm:p-12 rounded-2xl border border-white/20 text-white shadow-2xl">
+              <div className="text-center text-2xl sm:text-3xl font-semibold mb-8 whitespace-pre-line">
+                {currentRiddle}
+              </div>
+              <div className="mb-6">
+                <GuessForm />
+              </div>
+
+              {address?.toLowerCase() === YOUR_WALLET.toLowerCase() && (
+                <div className="mt-6 border-t border-white/20 pt-4">
+                  <h3 className="text-lg font-bold text-purple-300 mb-2">Admin Panel</h3>
+                  <AdminPanel onRiddleUpdated={setCurrentRiddle} />
                 </div>
+              )}
+            </div>
 
-                {/* 🔤 Guess Form */}
-                <div className="mb-6">
-                  <GuessForm />
-                </div>
-
-                {/* 🔧 Admin Panel */}
-                {address?.toLowerCase() === YOUR_WALLET.toLowerCase() && (
-                  <div className="mt-6 border-t border-white/20 pt-4">
-                    <h3 className="text-lg font-bold text-purple-300 mb-2">Admin Panel</h3>
-                    <AdminPanel onRiddleUpdated={setCurrentRiddle} />
-                  </div>
-                )}
+            <div className="w-full flex justify-center mt-10 z-40">
+              <div className="w-full max-w-[310px]">
+                <AudioControl />
               </div>
             </div>
 
-            {/* 🔊 Audio Player */}
-            <AudioControl audioRef={audioRef} />
+            <footer className="sm:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-full max-w-xs flex flex-col items-center text-white opacity-60 z-30">
+  <p className="text-sm mb-1">Built by Vendetta</p>
+  <a
+    href="https://X.com/GMbalenciaga"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="hover:opacity-100 transition-opacity duration-200"
+  >
+    <img src="/x-logo.png" alt="Twitter Logo" className="w-5 h-5 mt-1" />
+  </a>
+</footer>
+          </div>
 
-            {/* 👛 Wallet Connect */}
-            <div className="absolute top-6 right-6 z-30">
-              <ConnectButton />
-            </div>
-          </>
-        )}
-      </main>
+          <footer className="hidden sm:flex fixed bottom-4 left-1/2 -translate-x-1/2 flex-col items-center text-white opacity-60 z-40">
+            <p className="text-sm mb-1">Built by Vendetta</p>
+            <a
+              href="https://X.com/GMbalenciaga"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-100 transition-opacity duration-200"
+            >
+              <img src="/x-logo.png" alt="Twitter Logo" className="w-5 h-5 mt-1" />
+            </a>
+          </footer>
+
+          {isMenuOpen && (
+            <div className="fixed inset-0 z-40 backdrop-blur-sm bg-black/10 pointer-events-none" />
+          )}
+        </main>
+      )}
     </>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

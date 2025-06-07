@@ -22,7 +22,6 @@ const GuessForm = () => {
         return;
       }
 
-      // Simulate contract call
       const { request } = await publicClient.simulateContract({
         address: RIDDLE_GAME_ADDRESS,
         abi: RIDDLE_GAME_ABI,
@@ -32,21 +31,16 @@ const GuessForm = () => {
         account: account.address,
       });
 
-      // Create wallet client
       const walletClient = createWalletClient({
         account: account.address,
         chain: monadTestnet,
         transport: custom((window as any).ethereum),
       });
 
-      // Send transaction
       const hash = await walletClient.writeContract(request);
       toast.loading('Verifying your guess...');
-
-      // Wait for confirmation
       await publicClient.waitForTransactionReceipt({ hash });
 
-      // Check who won
       const winnerOnChain = await publicClient.readContract({
         address: RIDDLE_GAME_ADDRESS,
         abi: RIDDLE_GAME_ABI,
@@ -77,17 +71,18 @@ const GuessForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 w-full">
       <input
         type="text"
         value={guess}
         onChange={(e) => setGuess(e.target.value)}
         placeholder="Enter your guess"
-        className="w-full px-4 py-2 border rounded-md bg-white/10 text-white"
+        className="text-center w-full px-4 py-3 text-white text-base rounded-md border border-white/30 bg-white/10 backdrop-blur-md placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-500"
       />
+
       <button
         type="submit"
-        className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-md"
+        className="animate-[pulseGlow_2.5s_infinite] shadow-lg w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 sm:py-4 text-base sm:text-lg rounded-md transition"
       >
         Submit Guess (0.5 MON)
       </button>
