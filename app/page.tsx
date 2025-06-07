@@ -95,7 +95,7 @@ useEffect(() => {
   return (
     <>
       <Head>
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/og-image.png" />
         <title>Orbique</title>
       </Head>
 

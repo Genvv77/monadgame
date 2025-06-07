@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@farcaster/frame-sdk": "^0.0.60",
     "@rainbow-me/rainbowkit": "^1.0.6",
     "framer-motion": "^12.16.0",
     "lucide-react": "^0.513.0",
