@@ -1,5 +1,4 @@
-// app/api/frame/route.ts
-
+// /app/api/frame/route.ts
 import { NextResponse } from 'next/server';
 
 export async function GET() {
@@ -7,21 +6,13 @@ export async function GET() {
     <!DOCTYPE html>
     <html>
       <head>
-        <meta property="fc:frame" content="vNext" />
-        <meta property="fc:frame:image" content="https://orbique.vercel.app/public/og-image.png" />
-        <meta property="fc:frame:post_url" content="https://orbique.vercel.app/api/frame" />
-        <meta property="fc:frame:button:1" content="Start Playing" />
-        <meta property="fc:frame:button:2" content="Pot Status" />
-        <meta property="fc:frame:button:3" content="Last Winner" />
-        <meta property="fc:frame:button:4" content="Try a Guess" />
-        <meta property="og:title" content="Orbique - Riddle Game" />
-        <meta property="og:description" content="A mysterious riddle awaits. Solve it to win the pot." />
-        <meta property="og:image" content="https://orbique.vercel.app/public/og-image.png" />
+        <meta property="og:title" content="Can you solve this?" />
+        <meta property="og:image" content="https://orbique.vercel.app/og-image.png" />
+        <meta name="fc:frame" content="vNext" />
+        <meta name="fc:frame:button:1" content="Play Now" />
+        <meta name="fc:frame:post_url" content="https://orbique.vercel.app/api/frame/submit" />
       </head>
-      <body>
-        <h1>Orbique</h1>
-        <p>A mysterious riddle awaits. Solve it to win the pot.</p>
-      </body>
+      <body></body>
     </html>
   `;
 
@@ -29,8 +20,10 @@ export async function GET() {
     status: 200,
     headers: {
       'Content-Type': 'text/html',
+      'Cache-Control': 'max-age=0, no-cache, no-store, must-revalidate',
     },
   });
 }
+
 
 
