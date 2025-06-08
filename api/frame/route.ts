@@ -1,28 +1,31 @@
 // pages/api/frame.ts
-import type { NextApiRequest, NextApiResponse } from 'next'
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const origin = process.env.NEXT_PUBLIC_URL || 'https://orbique.vercel.app'
-  const frameUrl = `${origin}` // The page URL embedding Orbique
-  const imageUrl = `${origin}/og-image.png`
+import type { NextApiRequest, NextApiResponse } from "next";
 
-  const metadata = {
-    "fc:frame": frameUrl,
-    "fc:frame:height": 600,
-    "fc:frame:image": imageUrl,
-    "og:title": "ORB IQUE",
-    "og:image": imageUrl,
-    "og:description": "A riddle game with a pot prize",
-    "og:type": "website",
-    "fc:frame:button:1": ":type post",
-    "fc:frame:button:1:title": "Play Orbique",
-    "fc:frame:button:1:post_url": frameUrl,
-  }
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const siteUrl = "https://orbique.vercel.app"; // Your live domain
+  const imageUrl = `${siteUrl}/og-image.png`;   // Make sure this image exists in /public
 
-  res.setHeader("Content-Type", "application/json")
-  res.setHeader("Cache-Control", "public, immutable, no-transform, max-age=60")
-  res.status(200).json(metadata)
+  res.setHeader("Content-Type", "text/html");
+
+  res.status(200).send(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta property="og:title" content="Orbique Frame" />
+        <meta property="og:image" content="${imageUrl}" />
+        <meta name="fc:frame" content="vNext" />
+        <meta name="fc:frame:image" content="${imageUrl}" />
+        <meta name="fc:frame:button:1" content="Play Orbique" />
+        <meta name="fc:frame:post_url" content="${siteUrl}" />
+      </head>
+      <body>
+        Orbique Frame
+      </body>
+    </html>
+  `);
 }
+
 
 
 
