@@ -1,0 +1,14 @@
+{
+  "frame": {
+    "version": "1",
+    "name": "Orbique",
+    "iconUrl": "https://orbique.vercel.app/og-image.png",
+    "homeUrl": "https://orbique.vercel.app/",
+    "splashImageUrl": "https://orbique.vercel.app/og-image.png",
+    "splashBackgroundColor": "#000000",
+    "subtitle": "Test your riddle skills",
+    "description": "Web3 riddle game powered by MONAD — only one can win.",
+    "primaryCategory": "games",
+    "tags": ["riddles", "puzzles", "games", "brain", "challenge"]
+  }
+}
