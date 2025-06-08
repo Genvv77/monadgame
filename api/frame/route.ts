@@ -1,29 +1,35 @@
-// app/api/frame/route.ts
-import { NextResponse } from "next/server";
-import { createFrames } from "frames.js";
+// /app/api/frame/route.tsx (for App Router)
+import { NextResponse } from 'next/server';
 
-const frames = createFrames();
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const res = await frames.create({
-    image: "https://orbique.vercel.app/og-image.png",
-    imageAspectRatio: "1.91:1",
-    buttons: [
-      {
-        label: "Play now",
-        action: "link",
-        target: "https://orbique.vercel.app",
+  return new NextResponse(
+    `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Orbique Riddle</title>
+        <meta property="og:title" content="Play Orbique" />
+        <meta property="og:image" content="https://orbique.vercel.app/og-image.png" />
+        <meta property="fc:frame" content="vNext" />
+        <meta property="fc:frame:image" content="https://orbique.vercel.app/og-image.png" />
+        <meta property="fc:frame:button:1" content="Play Now" />
+        <meta property="fc:frame:post_url" content="https://orbique.vercel.app/api/frame" />
+      </head>
+      <body>
+        Orbique Frame
+      </body>
+    </html>
+    `,
+    {
+      headers: {
+        'Content-Type': 'text/html',
       },
-    ],
-  });
-
-  return new NextResponse(res, {
-    status: 200,
-    headers: {
-      "Content-Type": "text/html",
-    },
-  });
+    }
+  );
 }
+
 
 
 
