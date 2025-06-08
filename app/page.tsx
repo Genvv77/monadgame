@@ -99,9 +99,10 @@ useEffect(() => {
         <title>Orbique</title>
 
 <meta property="fc:frame" content="vNext" />
-<meta property="fc:frame:image" content="https://orbique.vercel.app/og-image.png" />
-<meta property="fc:frame:button:1" content="Play now" />
-<meta property="fc:frame:post_url" content="https://orbique.vercel.app/" />
+  <meta property="fc:frame:image" content="https://orbique.vercel.app/og-image.png" />
+  <meta property="fc:frame:button:1" content="Play Orbique" />
+  <meta property="fc:frame:button:1:action" content="launch_frame" />
+  <meta property="fc:frame:post_url" content="https://orbique.vercel.app/api/frame" />
 
       </Head>
 
