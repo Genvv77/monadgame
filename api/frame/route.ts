@@ -1,27 +1,30 @@
-import { NextResponse } from 'next/server';
+// pages/api/frame.ts
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-export async function GET() {
-  const html = `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta property="og:title" content="Orbique Riddle Game" />
-      <meta property="og:image" content="https://orbique.vercel.app/og-image.png" />
-      <meta property="fc:frame" content="vNext" />
-      <meta property="fc:frame:image" content="https://orbique.vercel.app/og-image.png" />
-      <meta property="fc:frame:button:1" content="Play Now" />
-      <meta property="fc:frame:post_url" content="https://orbique.vercel.app/api/submit" />
-    </head>
-    <body>
-    </body>
-    </html>
-  `;
-  return new NextResponse(html, {
-    headers: {
-      'Content-Type': 'text/html',
-    },
-  });
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  const origin = process.env.NEXT_PUBLIC_URL || 'https://orbique.vercel.app'
+  const frameUrl = `${origin}` // The page URL embedding Orbique
+  const imageUrl = `${origin}/og-image.png`
+
+  const metadata = {
+    "fc:frame": frameUrl,
+    "fc:frame:height": 600,
+    "fc:frame:image": imageUrl,
+    "og:title": "ORB IQUE",
+    "og:image": imageUrl,
+    "og:description": "A riddle game with a pot prize",
+    "og:type": "website",
+    "fc:frame:button:1": ":type post",
+    "fc:frame:button:1:title": "Play Orbique",
+    "fc:frame:button:1:post_url": frameUrl,
+  }
+
+  res.setHeader("Content-Type", "application/json")
+  res.setHeader("Cache-Control", "public, immutable, no-transform, max-age=60")
+  res.status(200).json(metadata)
 }
+
+
 
 
 
