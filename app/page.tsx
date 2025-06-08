@@ -1,5 +1,19 @@
 "use client";
-
+export const metadata = {
+  title: "Orbique",
+  icons: "/og-image.png",
+  openGraph: {
+    title: "Orbique",
+    images: ["https://orbique.vercel.app/og-image.png"],
+  },
+  other: {
+    "fc:frame": "vNext",
+    "fc:frame:image": "https://orbique.vercel.app/og-image.png",
+    "fc:frame:button:1": "Play Orbique",
+    "fc:frame:button:1:action": "launch_frame",
+    "fc:frame:post_url": "https://orbique.vercel.app/api/frame",
+  },
+};
 import React, { useEffect, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import PotBalance from "@/components/PotBalance";
@@ -97,13 +111,6 @@ useEffect(() => {
       <Head>
         <link rel="icon" href="/og-image.png" />
         <title>Orbique</title>
-
-<meta property="fc:frame" content="vNext" />
-  <meta property="fc:frame:image" content="https://orbique.vercel.app/og-image.png" />
-  <meta property="fc:frame:button:1" content="Play Orbique" />
-  <meta property="fc:frame:button:1:action" content="launch_frame" />
-  <meta property="fc:frame:post_url" content="https://orbique.vercel.app/api/frame" />
-
       </Head>
 
       <video
