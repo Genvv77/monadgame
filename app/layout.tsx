@@ -1,11 +1,21 @@
 import './globals.css';
 import Providers from './providers';
 import { Toaster } from 'react-hot-toast';
-import Head from 'next/head';
 
 export const metadata = {
   title: 'ORBIQUE',
   description: 'Win MON by solving riddles!',
+  icons: '/og-image.png',
+  openGraph: {
+    images: ['https://orbique.vercel.app/og-image.png'],
+  },
+  other: {
+    'fc:frame': 'vNext',
+    'fc:frame:image': 'https://orbique.vercel.app/og-image.png',
+    'fc:frame:button:1': 'Play Orbique',
+    'fc:frame:button:1:action': 'launch_frame',
+    'fc:frame:post_url': 'https://orbique.vercel.app/api/frame',
+  },
 };
 
 export default function RootLayout({
@@ -15,11 +25,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
-      </head>
       <body>
         <Providers>
           {children}
@@ -29,4 +34,5 @@ export default function RootLayout({
     </html>
   );
 }
+
 
