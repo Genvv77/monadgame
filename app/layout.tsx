@@ -1,8 +1,13 @@
+// app/layout.tsx
 import './globals.css';
 import Providers from './providers';
 import { Toaster } from 'react-hot-toast';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body>
@@ -14,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
 
 
 
