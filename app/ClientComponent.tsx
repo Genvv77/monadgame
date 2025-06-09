@@ -94,10 +94,7 @@ useEffect(() => {
 
   return (
     <>
-      <Head>
-        <link rel="icon" href="/og-image.png" />
-        <title>Orbique</title>
-      </Head>
+      
 
       <video
         autoPlay
