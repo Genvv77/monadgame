@@ -1,19 +1,24 @@
 {
   "accountAssociation": {
-    "header": "eyJmaWQiOjIwMDgzMSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweGUzZDFGQTAxOUEwQjQ0ZWE0QzRCY0IyNzhDMUJkRjM2MDUyQWY2ZTAifQ",
+    "header": {
+      "fid": 200831,
+      "type": "custody",
+      "key": "0xe3d1fa019a0b44ea4c4bcb278c1bdf36052af6e0"
+    },
     "payload": "eyJkb21haW4iOiJvcmJpcXVlLnZlcmNlbC5hcHAifQ",
     "signature": "MHhiMTYwNzgzYmRiMWQ5ZjA3NWU3YzE0MjA2ZDliNjUyNjg3NGZlMjhhMGViMDQ3ZDY2YWJmNDk5NjgyNGJmYTExNTc4ZTg5YWU4MmEyOGExOWQ5ZWNkNjhmNTdiYzAxMWQ4ZTQ0MGU2MWY4YmQzNTFhNTE4YzhhZWVlOWY2MDYwNTFj"
   },
   "frame": {
-    "version": "1",
+    "version": "1.0.0",
     "name": "Orbique",
     "iconUrl": "https://orbique.vercel.app/og-image.png",
-    "homeUrl": "https://orbique.vercel.app/",
     "splashImageUrl": "https://orbique.vercel.app/og-image.png",
-    "splashBackgroundColor": "#000000",
+    "splashBackgroundColor": "#8b5cf6",
+    "homeUrl": "https://orbique.vercel.app",
     "subtitle": "Test your riddle skills",
     "description": "Web3 riddle game powered by MONAD — only one can win.",
     "primaryCategory": "games",
-    "tags": ["riddles", "puzzles", "games", "brain", "challenge"]
+    "tags": ["riddles","puzzles","games","brain","challenge"]
   }
 }
+

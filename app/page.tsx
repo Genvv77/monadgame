@@ -9,18 +9,13 @@ export const metadata = {
     url: "https://orbique.vercel.app",
   },
   other: {
-    // Mini App Frame Embed - FORMAT CORRECT
-    "fc:frame": JSON.stringify({
-      version: "1.0.0",
-      imageUrl: "https://orbique.vercel.app/og-image.png",
-      button: {
-        title: "🎮 Play Orbique",
-        action: {
-          type: "launch_frame",
-          url: "https://orbique.vercel.app"
-        }
-      }
-    }),
+    // FRAME MÉTADONNÉES - VERSION CORRECTE POUR EMBED
+    "fc:frame": "vNext",
+    "fc:frame:image": "https://orbique.vercel.app/og-image.png",
+    "fc:frame:image:aspect_ratio": "1.91:1",
+    "fc:frame:button:1": "🎮 Play Orbique",
+    "fc:frame:button:1:action": "post",
+    "fc:frame:post_url": "https://orbique.vercel.app/api/frame",
     
     // Twitter Card
     "twitter:card": "summary_large_image",
@@ -30,7 +25,7 @@ export const metadata = {
   },
 };
 
-import ClientComponent from './ClientComponent';
+import ClientComponent from "./ClientComponent";
 
 export default function Page() {
   return <ClientComponent />;
