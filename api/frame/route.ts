@@ -1,9 +1,8 @@
-// app/api/frame/route.ts
+
 export async function POST(request: Request) {
   const body = await request.json()
   console.log("Frame interaction:", body)
 
-  // respond with the “next state”:
   const responseHTML = `<!DOCTYPE html>
   <html><head>
     <meta property="fc:frame" content="vNext" />
