@@ -10,7 +10,6 @@ import AudioControl from "@/components/AudioPlayer";
 import { useAccount, useContractRead } from "wagmi";
 import toast from "react-hot-toast";
 import { RIDDLE_GAME_ABI, RIDDLE_GAME_ADDRESS } from "@/constants/abi";
-import Head from "next/head";
 import NavMenu from "@/components/NavMenu";
 import { motion } from "framer-motion";
 import { Wallet } from "lucide-react";
