@@ -2,12 +2,12 @@
 export async function GET() {
   const html = `<!DOCTYPE html>
   <html><head>
-    <meta property="fc:frame" content="vNext"/>
-    <meta property="fc:frame:button:1" content="🚀 Launch Game"/>
-    <meta property="fc:frame:button:1:action" content="link"/>
-    <meta property="fc:frame:button:1:target" content="https://orbique.vercel.app"/>
-  </head><body></body></html>`;
+    <meta name="fc:frame" content='{"version":"next",
+       "imageUrl":"https://orbique.vercel.app/og-image.png",
+       "button":{"title":"🚀 Launch Game","action":{"type":"link","url":"https://orbique.vercel.app"}}}'/>
+  </head></html>`;
   return new Response(html, {
     headers: { "Content-Type": "text/html; charset=utf-8" },
   });
 }
+
