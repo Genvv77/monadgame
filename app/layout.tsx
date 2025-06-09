@@ -4,15 +4,15 @@ import Providers from './providers'
 import { Toaster } from 'react-hot-toast'
 
 const frameEmbed = {
-  version: 'next' as const,
-  imageUrl: 'https://orbique.vercel.app/og-image.png',
+  version: "1", // Use "1" instead of "next" for current stable version
+  imageUrl: 'https://orbique.vercel.app/og-image.png',     // Must be 3:2 aspect ratio
   button: {
-    title: '🎮 Play Orbique',
+    title: '🎮 Play Orbique',                              // button text (≤32 chars)
     action: {
-      type: 'launch_frame' as const,
-      name: 'Orbique',
-      url: 'https://orbique.vercel.app/api/frame',
-      splashImageUrl: 'https://orbique.vercel.app/og-image.png',
+      type: 'launch_frame' as const,                      // must be "launch_frame"
+      name: 'Orbique',                                    // your app's name (≤32 chars)
+      url: 'https://orbique.vercel.app',                  // where to open in-frame
+      splashImageUrl: 'https://orbique.vercel.app/logo.png', // Must be 200x200px
       splashBackgroundColor: '#8b5cf6'
     }
   }
@@ -22,18 +22,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        {/* v2 JSON embed for card & manifest */}
-        <meta name="fc:frame" content={JSON.stringify(frameEmbed)} />
+        {/* Farcaster v2 Mini-App embed: Use 'name' not 'property' */}
+        <meta
+          name="fc:frame"
+          content={JSON.stringify(frameEmbed)}
+        />
 
-        {/* v1/vNext tags for interactive preview */}
-        <meta property="fc:frame" content="vNext" />
-        <meta property="fc:frame:image" content="https://orbique.vercel.app/og-image.png" />
-        <meta property="fc:frame:image:aspect_ratio" content="1.91:1" />
-        <meta property="fc:frame:button:1" content="🎮 Play Orbique" />
-        <meta property="fc:frame:button:1:action" content="link" />
-        <meta property="fc:frame:button:1:target" content="https://orbique.vercel.app" />
-
-        {/* SEO / OpenGraph / Twitter */}
+        {/* Standard SEO/OpenGraph/Twitter tags */}
         <title>Orbique</title>
         <meta name="description" content="Web3 riddle game powered by MONAD — only one can win." />
         <meta property="og:title" content="Orbique" />
@@ -45,7 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Providers>
           {children}
-          <Toaster position="top-right" reverseOrder={false} />
+          <Toaster position="top-right" reverseOrder={false}/>
         </Providers>
       </body>
     </html>
