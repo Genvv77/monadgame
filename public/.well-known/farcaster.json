@@ -5,14 +5,29 @@
     "signature": "MHhiMTYwNzgzYmRiMWQ5ZjA3NWU3YzE0MjA2ZDliNjUyNjg3NGZlMjhhMGViMDQ3ZDY2YWJmNDk5NjgyNGJmYTExNTc4ZTg5YWU4MmEyOGExOWQ5ZWNkNjhmNTdiYzAxMWQ4ZTQ0MGU2MWY4YmQzNTFhNTE4YzhhZWVlOWY2MDYwNTFj"
   },
   "frame": {
-    "version": "1",
-    "name": "Orbique",
-    "homeUrl": "https://orbique.vercel.app",
-    "iconUrl": "https://orbique.vercel.app/og-image.png",
-    "imageUrl": "https://orbique.vercel.app/og-image.png",
-    "buttonTitle": "🎮 Play Orbique",
-    "splashImageUrl": "https://orbique.vercel.app/og-image.png",
+    "version":               "1",
+    "name":                  "Orbique",
+    "homeUrl":               "https://orbique.vercel.app",
+    "iconUrl":               "https://orbique.vercel.app/og-image.png",
+    "splashImageUrl":        "https://orbique.vercel.app/og-image.png",
     "splashBackgroundColor": "#8b5cf6",
-    "webhookUrl": "https://orbique.vercel.app/api/frame"
+    "subtitle":       "Test your riddle skills",
+    "description":    "Web3 riddle game powered by MONAD — only one can win.",
+    "screenshotUrls": [
+      "https://orbique.vercel.app/screenshot.png",
+      "https://orbique.vercel.app/screenshot.png"
+    ],
+    "primaryCategory": "games",
+    "tags":           ["riddles","puzzles","games","brain","challenge"],
+
+    "heroImageUrl":      "https://orbique.vercel.app/hero.png",
+    "tagline":           "Only one can win the crown",
+    "ogTitle":           "Play Orbique – The Ultimate Web3 Riddle Contest",
+    "ogDescription":     "Solve the puzzles, beat the clock, win the prize.",
+    "ogImageUrl":        "https://orbique.vercel.app/og-image.png",
+    "noindex":           false,
+    "requiredChains":    [""],        
+    "requiredCapabilities": [],    
+    "castShareUrl":      "https://orbique.vercel.app" 
   }
 }
