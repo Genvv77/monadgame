@@ -3,30 +3,19 @@ import './globals.css'
 import Providers from './providers'
 import { Toaster } from 'react-hot-toast'
 
-// minimal v2 FrameEmbed object
-const frameEmbed = {
-  version: 'next' as const,
-  imageUrl: 'https://orbique.vercel.app/og-image.png',
-  button: {
-    title: '🎮 Play Orbique',
-    action: {
-      type: 'launch_frame' as const,
-      url: 'https://orbique.vercel.app/api/frame',
-    }
-  }
-}
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        {/* — v2 Mini-App embed: exactly one JSON blob in name="fc:frame" — */}
-        <meta
-          name="fc:frame"
-          content={JSON.stringify(frameEmbed)}
-        />
+        {/* v1/vNext Farcaster Frame Embed as a direct link */}
+        <meta property="fc:frame" content="vNext" />
+        <meta property="fc:frame:image" content="https://orbique.vercel.app/og-image.png" />
+        <meta property="fc:frame:image:aspect_ratio" content="1.91:1" />
+        <meta property="fc:frame:button:1" content="🎮 Play Orbique" />
+        <meta property="fc:frame:button:1:action" content="link" />
+        <meta property="fc:frame:button:1:target" content="https://orbique.vercel.app" />
 
-        {/* — your normal SEO / OpenGraph / Twitter — */}
+        {/* Your normal SEO / OG / Twitter */}
         <title>Orbique</title>
         <meta name="description" content="Web3 riddle game powered by MONAD — only one can win." />
         <meta property="og:title" content="Orbique" />
@@ -44,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 }
+
 
 
 
