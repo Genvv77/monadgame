@@ -1,8 +1,8 @@
 {
   "accountAssociation": {
-    "header": "…your JWS header…",
-    "payload": "…base64url {\"domain\":\"orbique.vercel.app\"}…",
-    "signature": "…your signature…"
+    "header": "eyJmaWQiOjIwMDgzMSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweGUzZDFGQTAxOUEwQjQ0ZWE0QzRCY0IyNzhDMUJkRjM2MDUyQWY2ZTAifQ",
+    "payload": "eyJkb21haW4iOiJvcmJpcXVlLnZlcmNlbC5hcHAifQ",
+    "signature": "MHhiMTYwNzgzYmRiMWQ5ZjA3NWU3YzE0MjA2ZDliNjUyNjg3NGZlMjhhMGViMDQ3ZDY2YWJmNDk5NjgyNGJmYTExNTc4ZTg5YWU4MmEyOGExOWQ5ZWNkNjhmNTdiYzAxMWQ4ZTQ0MGU2MWY4YmQzNTFhNTE4YzhhZWVlOWY2MDYwNTFj"
   },
   "frame": {
     "version": "1",
