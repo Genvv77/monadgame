@@ -4,13 +4,11 @@ import Providers from './providers'
 import { Toaster } from 'react-hot-toast'
 
 const appUrl = process.env.NEXT_PUBLIC_URL || 'https://orbique.vercel.app'
-
-// FrameEmbed v2 JSON blob, spec-correct
 const frameEmbed = {
   version: 'next',
   name: 'Orbique',
   imageUrl: `${appUrl}/og-image.png`,
-  aspectRatio: '1.91:1',
+  aspect_ratio: '1.91:1',
   button: {
     title: '🎮 Play Orbique',
     action: {
@@ -30,10 +28,9 @@ export const metadata = {
     title: 'Orbique',
     description: 'Web3 riddle game powered by MONAD — only one can win.',
     url: appUrl,
-    images: [ `${appUrl}/og-image.png` ],
+    images: [ `${appUrl}/og-image.png` ]
   },
   other: {
-    // This outputs: <meta name="fc:frame" content="…JSON blob…">
     'fc:frame': JSON.stringify(frameEmbed)
   }
 }
