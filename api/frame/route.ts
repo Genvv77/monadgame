@@ -1,30 +1,29 @@
 // app/api/frame/route.ts
-export async function GET() {
-  const html = `<!DOCTYPE html>
-<html>
+// This endpoint is called when Farcaster clients fire the `launch_frame` action.
+// It returns a minimal HTML snippet with the next button (e.g. “Launch Game”).
+
+const FRAME_HTML = `<!DOCTYPE html>
+<html lang="en">
   <head>
+    <!-- Frame Step 2: provide a direct link button -->
     <meta property="fc:frame" content="vNext" />
-    <meta property="fc:frame:image" content="https://orbique.vercel.app/og-image.png" />
-    <meta property="fc:frame:image:aspect_ratio" content="1.91:1" />
-    <meta property="fc:frame:button:1" content="🎮 Play Orbique" />
+    <meta property="fc:frame:button:1" content="🚀 Launch Game" />
     <meta property="fc:frame:button:1:action" content="link" />
     <meta property="fc:frame:button:1:target" content="https://orbique.vercel.app" />
-    
-
-    <meta property="og:title" content="Orbique" />
-    <meta property="og:description" content="Web3 riddle game powered by MONAD — only one can win." />
-    <meta property="og:image" content="https://orbique.vercel.app/og-image.png" />
   </head>
-  <body>
-    <p>Orbique - Web3 riddle game powered by MONAD</p>
-  </body>
+  <body></body>
 </html>`
-  
-  return new Response(html, {
-    headers: { 'Content-Type': 'text/html; charset=utf-8' },
+
+// For launch_frame flows
+export async function POST(request: Request) {
+  return new Response(FRAME_HTML, {
+    headers: { 'Content-Type': 'text/html; charset=utf-8' }
   })
 }
 
-export async function POST(request: Request) {
-  return await GET()
+// Optional: respond to GET the same, if you want to allow the Embed Tool to demo via GET
+export async function GET() {
+  return new Response(FRAME_HTML, {
+    headers: { 'Content-Type': 'text/html; charset=utf-8' }
+  })
 }
