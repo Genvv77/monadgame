@@ -6,12 +6,11 @@ import { Toaster } from 'react-hot-toast'
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <head>
-        {/* v2 JSON embed: single meta tag */}
-        <meta
-          name="fc:frame"
-          content='{"version":"next","imageUrl":"https://orbique.vercel.app/og-image.png","button":{"title":"🎮 Play Orbique","action":{"type":"launch_frame","url":"https://orbique.vercel.app/api/frame"}}}'
-        />
+  <head>
+    <meta
+      name="fc:frame"
+      content='{"version":"next","imageUrl":"https://orbique.vercel.app/og-image.png","aspectRatio":"1.91:1","button":{"title":"🎮 Play Orbique","action":{"type":"launch_frame","url":"https://orbique.vercel.app/api/frame"}}}'
+    />
 
         {/* v1/vNext tags for Embed Tool’s interactive pane */}
         <meta property="fc:frame" content="vNext" />
