@@ -4,7 +4,7 @@
     "payload":   "eyJkb21haW4iOiJvcmJpcXVlLnZlcmNlbC5hcHAifQ",
     "signature": "MHhiMTYwNzgzYmRiMWQ5ZjA3NWU3YzE0MjA2ZDliNjUyNjg3NGZlMjhhMGViMDQ3ZDY2YWJmNDk5NjgyNGJmYTExNTc4ZTg5YWU4MmEyOGExOWQ5ZWNkNjhmNTdiYzAxMWQ4ZTQ0MGU2MWY4YmQzNTFhNTE4YzhhZWVlOWY2MDYwNTFj"
   },
-  "frame": {
+ "frame": {
     "version":               "1",
     "name":                  "Orbique",
     "homeUrl":               "https://orbique.vercel.app",
