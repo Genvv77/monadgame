@@ -4,15 +4,15 @@ import Providers from './providers'
 import { Toaster } from 'react-hot-toast'
 
 const frameEmbed = {
-  version: "next", // Use "next" as expected by the embed tool
-  imageUrl: 'https://orbique.vercel.app/og-image.png',     // Must be 3:2 aspect ratio
+  version: 'next' as const, // v2 FrameEmbed version
+  imageUrl: 'https://orbique.vercel.app/og-image.png',
   button: {
-    title: '🎮 Play Orbique',                              // button text (≤32 chars)
+    title: '🎮 Play Orbique',
     action: {
-      type: 'launch_frame' as const,                      // must be "launch_frame"
-      name: 'Orbique',                                    // your app's name (≤32 chars)
-      url: 'https://orbique.vercel.app',                  // where to open in-frame
-      splashImageUrl: 'https://orbique.vercel.app/og-image.png', // Use same image temporarily
+      type: 'launch_frame' as const,
+      name: 'Orbique',
+      url: 'https://orbique.vercel.app/api/frame', // POST landing URL
+      splashImageUrl: 'https://orbique.vercel.app/og-image.png',
       splashBackgroundColor: '#8b5cf6'
     }
   }
@@ -22,13 +22,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        {/* Farcaster v2 Mini-App embed: Use 'name' not 'property' */}
+        {/* v2 Mini-App embed: single JSON blob */}
         <meta
           name="fc:frame"
           content={JSON.stringify(frameEmbed)}
         />
 
-        {/* Standard SEO/OpenGraph/Twitter tags */}
+        {/* Standard SEO / OpenGraph / Twitter */}
         <title>Orbique</title>
         <meta name="description" content="Web3 riddle game powered by MONAD — only one can win." />
         <meta property="og:title" content="Orbique" />
@@ -40,13 +40,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Providers>
           {children}
-          <Toaster position="top-right" reverseOrder={false}/>
+          <Toaster position="top-right" reverseOrder={false} />
         </Providers>
       </body>
     </html>
   )
 }
-
 
 
 
