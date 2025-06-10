@@ -5,7 +5,7 @@ const FRAME_HTML = `<!DOCTYPE html>
     <meta property="fc:frame:image" content="https://orbique.vercel.app/og-image.png" />
     <meta property="fc:frame:image:aspect_ratio" content="1.91:1" />
 
-    <meta property="fc:frame:button:1" content="🚀 Launch Game" />
+    <meta property="fc:frame:button:1" content="🎮 Play Orbique" />
     <meta property="fc:frame:button:1:action" content="link" />
     <meta property="fc:frame:button:1:target" content="https://orbique.vercel.app" />
   </head>
@@ -14,13 +14,13 @@ const FRAME_HTML = `<!DOCTYPE html>
 
 export async function GET() {
   return new Response(FRAME_HTML, {
-    headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    headers: { 'Content-Type': 'text/html; charset=utf-8' }
   })
 }
 
 export async function POST(request: Request) {
   return new Response(FRAME_HTML, {
-    headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    headers: { 'Content-Type': 'text/html; charset=utf-8' }
   })
 }
 
