@@ -4,7 +4,7 @@ import Providers from './providers'
 import { Toaster } from 'react-hot-toast'
 
 const frameEmbed = {
-  version: "1", // Use "1" instead of "next" for current stable version
+  version: "next", // Use "next" as expected by the embed tool
   imageUrl: 'https://orbique.vercel.app/og-image.png',     // Must be 3:2 aspect ratio
   button: {
     title: '🎮 Play Orbique',                              // button text (≤32 chars)
@@ -12,7 +12,7 @@ const frameEmbed = {
       type: 'launch_frame' as const,                      // must be "launch_frame"
       name: 'Orbique',                                    // your app's name (≤32 chars)
       url: 'https://orbique.vercel.app',                  // where to open in-frame
-      splashImageUrl: 'https://orbique.vercel.app/logo.png', // Must be 200x200px
+      splashImageUrl: 'https://orbique.vercel.app/og-image.png', // Use same image temporarily
       splashBackgroundColor: '#8b5cf6'
     }
   }
