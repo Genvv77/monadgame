@@ -12,8 +12,6 @@ const frameEmbed = {
       type: 'launch_frame' as const,                      // must be "launch_frame"
       name: 'Orbique',                                    // your app’s name (≤32 chars)
       url: 'https://orbique.vercel.app',                  // where to open in-frame
-      splashImageUrl: 'https://orbique.vercel.app/og-image.png',  
-      splashBackgroundColor: '#8b5cf6'
     }
   }
 }
