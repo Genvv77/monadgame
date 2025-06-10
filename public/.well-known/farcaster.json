@@ -1,8 +1,8 @@
 {
   "accountAssociation": {
-    "header": "eyJmaWQiOjIwMDgzMSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweGUzZDFGQTAxOUEwQjQ0ZWE0QzRCY0IyNzhDMUJkRjM2MDUyQWY2ZTAifQ",
-    "payload": "eyJkb21haW4iOiJvcmJpcXVlLnZlcmNlbC5hcHAifQ",
-    "signature": "MHhiMTYwNzgzYmRiMWQ5ZjA3NWU3YzE0MjA2ZDliNjUyNjg3NGZlMjhhMGViMDQ3ZDY2YWJmNDk5NjgyNGJmYTExNTc4ZTg5YWU4MmEyOGExOWQ5ZWNkNjhmNTdiYzAxMWQ4ZTQ0MGU2MWY4YmQzNTFhNTE4YzhhZWVlOWY2MDYwNTFj"
+    "header": "…your JWS header…",
+    "payload": "…base64url {\"domain\":\"orbique.vercel.app\"}…",
+    "signature": "…your signature…"
   },
   "frame": {
     "version": "1",
@@ -11,8 +11,9 @@
     "iconUrl": "https://orbique.vercel.app/og-image.png",
     "imageUrl": "https://orbique.vercel.app/og-image.png",
     "buttonTitle": "🎮 Play Orbique",
-    "splashImageUrl": "https://orbique.vercel.app/og-image.png",
-    "splashBackgroundColor": "#8b5cf6",
-    "webhookUrl": "https://orbique.vercel.app/api/frame"
+    "buttonAction": {
+      "type": "link",
+      "url": "https://orbique.vercel.app"
+    }
   }
 }

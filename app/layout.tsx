@@ -22,6 +22,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
+        {/* ← v2 Mini-App embed: exactly one meta tag containing full FrameEmbed JSON */}
+        <meta
+          name="fc:frame"
+          content={JSON.stringify(frameEmbed)}
+        />
+
         {/* — your usual SEO/OpenGraph/Twitter tags — */}
         <title>Orbique</title>
         <meta name="description" content="Web3 riddle game powered by MONAD — only one can win." />
@@ -40,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 }
+
 
 
 
