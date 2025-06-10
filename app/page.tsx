@@ -1,9 +1,9 @@
 // app/page.tsx
-// NO 'use client' at the top—this file must be a Server Component
+// ← remove any 'use client' here so this is a Server Component
+
 import ClientComponent from './ClientComponent'
 
 const appUrl = process.env.NEXT_PUBLIC_URL || 'https://orbique.vercel.app'
-
 const frameEmbed = {
   version: 'next',
   name: 'Orbique',
@@ -31,13 +31,22 @@ export const metadata = {
     images: [ `${appUrl}/og-image.png` ],
   },
   other: {
-    'fc:frame': JSON.stringify(frameEmbed)
+    // v2 JSON‐blob for card & feed
+    'fc:frame': JSON.stringify(frameEmbed),
+    // v1/vNext tags for the interactive pane
+    'property:fc:frame':               'vNext',
+    'property:fc:frame:image':         frameEmbed.imageUrl,
+    'property:fc:frame:image:aspect_ratio': frameEmbed.aspect_ratio,
+    'property:fc:frame:button:1':      frameEmbed.button.title,
+    'property:fc:frame:button:1:action':'link',
+    'property:fc:frame:button:1:target':frameEmbed.button.action.url,
   }
 }
 
 export default function Page() {
   return <ClientComponent />
 }
+
 
 
 
