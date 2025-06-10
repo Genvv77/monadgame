@@ -10,7 +10,7 @@ export async function GET() {
     <meta property="fc:frame:button:1:action" content="link" />
     <meta property="fc:frame:button:1:target" content="https://orbique.vercel.app" />
     
-    <!-- Standard OpenGraph fallbacks -->
+
     <meta property="og:title" content="Orbique" />
     <meta property="og:description" content="Web3 riddle game powered by MONAD — only one can win." />
     <meta property="og:image" content="https://orbique.vercel.app/og-image.png" />

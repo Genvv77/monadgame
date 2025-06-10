@@ -12,6 +12,8 @@ const frameEmbed = {
       type: 'launch_frame' as const,                      // must be "launch_frame"
       name: 'Orbique',                                    // your app’s name (≤32 chars)
       url: 'https://orbique.vercel.app',                  // where to open in-frame
+      splashImageUrl: 'https://orbique.vercel.app/og-image.png',  
+      splashBackgroundColor: '#8b5cf6'
     }
   }
 }
@@ -25,15 +27,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           name="fc:frame"
           content={JSON.stringify(frameEmbed)}
         />
-
-        {/* — your usual SEO/OpenGraph/Twitter tags — */}
-        <title>Orbique</title>
-        <meta name="description" content="Web3 riddle game powered by MONAD — only one can win." />
-        <meta property="og:title" content="Orbique" />
-        <meta property="og:description" content="Web3 riddle game powered by MONAD — only one can win." />
-        <meta property="og:image" content="https://orbique.vercel.app/og-image.png" />
-        <meta property="og:url" content="https://orbique.vercel.app" />
-        <meta name="twitter:card" content="summary_large_image" />
       </head>
       <body>
         <Providers>
@@ -44,7 +37,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 }
-
 
 
 
