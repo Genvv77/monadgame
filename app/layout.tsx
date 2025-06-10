@@ -30,9 +30,6 @@ export const metadata = {
     url: appUrl,
     images: [ `${appUrl}/og-image.png` ]
   },
-  other: {
-    'fc:frame': JSON.stringify(frameEmbed)
-  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
