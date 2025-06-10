@@ -6,13 +6,8 @@ import { Toaster } from 'react-hot-toast'
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-  <head>
-    <meta
-      name="fc:frame"
-      content='{"version":"next","imageUrl":"https://orbique.vercel.app/og-image.png","aspectRatio":"1.91:1","button":{"title":"🎮 Play Orbique","action":{"type":"launch_frame","url":"https://orbique.vercel.app/api/frame"}}}'
-    />
-
-        {/* v1/vNext tags for Embed Tool’s interactive pane */}
+      <head>
+        {/* —— Farcaster v1 Frame Embed —— */}
         <meta property="fc:frame" content="vNext" />
         <meta property="fc:frame:image" content="https://orbique.vercel.app/og-image.png" />
         <meta property="fc:frame:image:aspect_ratio" content="1.91:1" />
@@ -20,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta property="fc:frame:button:1:action" content="link" />
         <meta property="fc:frame:button:1:target" content="https://orbique.vercel.app" />
 
-        {/* Standard SEO / OG / Twitter */}
+        {/* —— Your normal SEO / OG / Twitter —— */}
         <title>Orbique</title>
         <meta name="description" content="Web3 riddle game powered by MONAD — only one can win." />
         <meta property="og:title" content="Orbique" />
@@ -38,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 }
+
 
 
 
