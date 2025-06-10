@@ -14,7 +14,7 @@ const frameEmbed = {
     action: {
       type: 'launch_frame',
       name: 'Orbique',
-      url: `${appUrl}/api/frame`,
+      url: `${appUrl}`,
       splashImageUrl: `${appUrl}/og-image.png`,
       splashBackgroundColor: '#8b5cf6'
     }
