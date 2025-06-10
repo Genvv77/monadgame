@@ -1,13 +1,13 @@
 // app/api/frame/route.ts
 const FRAME_HTML = `<!DOCTYPE html>
 <html>
-<head>
-  <meta property="fc:frame" content="vNext" />
-  <meta property="fc:frame:button:1" content="🚀 Launch Game" />
-  <meta property="fc:frame:button:1:action" content="link" />
-  <meta property="fc:frame:button:1:target" content="https://orbique.vercel.app" />
-</head>
-<body></body>
+  <head>
+    <meta property="fc:frame" content="vNext" />
+    <meta property="fc:frame:button:1" content="🚀 Launch Game" />
+    <meta property="fc:frame:button:1:action" content="link" />
+    <meta property="fc:frame:button:1:target" content="https://orbique.vercel.app" />
+  </head>
+  <body></body>
 </html>`
 
 export async function POST() {
@@ -15,6 +15,7 @@ export async function POST() {
     headers: { 'Content-Type': 'text/html; charset=utf-8' }
   })
 }
-// Mirror GET so the Embed Tool “Open” preview also sees the button
+// Mirror for the Embed Tool’s “Open” preview
 export { POST as GET }
+
 
