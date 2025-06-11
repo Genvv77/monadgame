@@ -29,14 +29,15 @@ export default function ClientComponent() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("Loading");
 
-  useEffect(() => {
-  if (isFarcasterMiniApp) {
-    console.log("Detected Farcaster Mini App frame, skipping splash screen.");
-    setGameStarted(true);
-  } else {
-    console.log("NOT inside Farcaster Mini App frame.");
-  }
+ useEffect(() => {
+  try {
+    if (typeof window !== "undefined") {
+      // force skip splash for test
+      setGameStarted(true);
+    }
+  } catch (e) { }
 }, []);
+
 
   useEffect(() => {
     let dots = 1;
