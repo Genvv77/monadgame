@@ -22,27 +22,34 @@ export default function ClientComponent() {
   const { address } = useAccount();
   const [currentRiddle, setCurrentRiddle] = useState("Loading...");
   const [isHydrated, setIsHydrated] = useState(false);
-const [isLoading, setIsLoading] = useState(false);
-const [loadingText, setLoadingText] = useState("Loading");
-useEffect(() => {
-  let dots = 1;
-  setLoadingText("Loading.");
-  const interval = setInterval(() => {
-    dots = (dots + 1) % 4;
-    setLoadingText("Loading" + ".".repeat(dots));
-  }, 500);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState("Loading");
 
-  const timer = setTimeout(() => {
-    setIsHydrated(true);
-  }, 1500);
+  // AUTO-SKIP SPLASH in Farcaster Mini App
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.frameElement) {
+      // We're inside a Farcaster Mini App frame!
+      setGameStarted(true);
+    }
+  }, []);
 
-  return () => {
-    clearInterval(interval);
-    clearTimeout(timer);
-  };
-}, []);
+  useEffect(() => {
+    let dots = 1;
+    setLoadingText("Loading.");
+    const interval = setInterval(() => {
+      dots = (dots + 1) % 4;
+      setLoadingText("Loading" + ".".repeat(dots));
+    }, 500);
 
+    const timer = setTimeout(() => {
+      setIsHydrated(true);
+    }, 1500);
 
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timer);
+    };
+  }, []);
 
   const { data: riddleData, error: riddleError } = useContractRead({
     address: RIDDLE_GAME_ADDRESS,
@@ -60,23 +67,6 @@ useEffect(() => {
     }
   }, [riddleData, riddleError]);
 
-  const startGame = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setGameStarted(true);
-    }, 1000); // Wait for animation, then start game
-  };
-
-  useEffect(() => {
-    if (gameStarted) {
-      const timer = setTimeout(() => {
-        window.dispatchEvent(new Event("audio-autoplay-start"));
-        setIsLoading(false);
-      }, 300);
-      return () => clearTimeout(timer);
-    }
-  }, [gameStarted]);
-
   useEffect(() => {
     if (!address || address.toLowerCase() === YOUR_WALLET.toLowerCase()) return;
     const detector = setInterval(() => {
@@ -91,10 +81,21 @@ useEffect(() => {
     return () => clearInterval(detector);
   }, [address]);
 
+  // Don't use this function (you already handle splash button inline)
+  // const startGame = () => { setGameStarted(true); };
+
+  useEffect(() => {
+    if (gameStarted) {
+      const timer = setTimeout(() => {
+        window.dispatchEvent(new Event("audio-autoplay-start"));
+        setIsLoading(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [gameStarted]);
+
   return (
     <>
-      
-
       <video
         autoPlay
         loop
@@ -115,36 +116,34 @@ useEffect(() => {
             Are you good with riddles? Let’s find out.
           </p>
           <button
-  onClick={() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setGameStarted(true);
-      window.dispatchEvent(new Event("audio-autoplay-start"));
-      setIsLoading(false);
-    }, 500); // Short delay for smoother transition
-  }}
-  disabled={!isHydrated || isLoading}
-  className={`px-6 py-3 text-white rounded-full text-lg tracking-wider shadow-md transition-all duration-300 flex items-center justify-center gap-2 ${
-    isHydrated && !isLoading
-      ? "bg-purple-600 hover:bg-purple-800 cursor-pointer"
-      : "bg-purple-900 cursor-not-allowed opacity-60"
-  }`}
->
-  {isLoading ? (
-    <motion.div
-      initial={{ opacity: 0, rotate: 0 }}
-      animate={{ opacity: 1, rotate: 360 }}
-      transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-      className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
-    />
-  ) : isHydrated ? (
-    "ENTER"
-  ) : (
-    loadingText
-  )}
-</button>
-
-
+            onClick={() => {
+              setIsLoading(true);
+              setTimeout(() => {
+                setGameStarted(true);
+                window.dispatchEvent(new Event("audio-autoplay-start"));
+                setIsLoading(false);
+              }, 500); // Short delay for smoother transition
+            }}
+            disabled={!isHydrated || isLoading}
+            className={`px-6 py-3 text-white rounded-full text-lg tracking-wider shadow-md transition-all duration-300 flex items-center justify-center gap-2 ${
+              isHydrated && !isLoading
+                ? "bg-purple-600 hover:bg-purple-800 cursor-pointer"
+                : "bg-purple-900 cursor-not-allowed opacity-60"
+            }`}
+          >
+            {isLoading ? (
+              <motion.div
+                initial={{ opacity: 0, rotate: 0 }}
+                animate={{ opacity: 1, rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+              />
+            ) : isHydrated ? (
+              "ENTER"
+            ) : (
+              loadingText
+            )}
+          </button>
         </div>
       ) : (
         <main className="w-full relative overflow-x-hidden font-sans">
@@ -199,7 +198,6 @@ useEffect(() => {
             >
               <div className="flex justify-between text-sm sm:text-base font-medium">
                 <div className="flex items-center gap-2">
-                  
                   <span>Pot:</span>
                   <PotBalance />
                 </div>
@@ -233,19 +231,16 @@ useEffect(() => {
             </div>
 
             <footer className="sm:hidden w-full mt-8 mb-10 flex flex-col items-center text-white opacity-70 text-sm z-10 relative">
-  <p className="mb-1">Built by Vendetta</p>
-  <a
-    href="https://x.com/GMbalenciaga"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="hover:opacity-100 transition-opacity duration-200"
-  >
-    <img src="/x-logo.png" alt="Twitter Logo" className="w-5 h-5 mt-1" />
-  </a>
-</footer>
-
-
-
+              <p className="mb-1">Built by Vendetta</p>
+              <a
+                href="https://x.com/GMbalenciaga"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-100 transition-opacity duration-200"
+              >
+                <img src="/x-logo.png" alt="Twitter Logo" className="w-5 h-5 mt-1" />
+              </a>
+            </footer>
           </div>
 
           <footer className="hidden sm:flex fixed bottom-4 left-1/2 -translate-x-1/2 flex-col items-center text-white opacity-60 z-40">
