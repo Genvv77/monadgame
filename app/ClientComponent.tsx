@@ -14,6 +14,10 @@ import NavMenu from "@/components/NavMenu";
 import { motion } from "framer-motion";
 import { Wallet } from "lucide-react";
 
+const isFarcasterMiniApp = typeof window !== "undefined"
+  && typeof window.frameElement !== "undefined"
+  && window.location !== window.parent.location; // extra robust
+
 const YOUR_WALLET = "0xc1B78548B0Fc3D7bC94AbEe1AfDbE67899aeB995";
 
 export default function ClientComponent() {
@@ -25,13 +29,14 @@ export default function ClientComponent() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("Loading");
 
-  // AUTO-SKIP SPLASH in Farcaster Mini App
   useEffect(() => {
-    if (typeof window !== "undefined" && window.frameElement) {
-      // We're inside a Farcaster Mini App frame!
-      setGameStarted(true);
-    }
-  }, []);
+  if (isFarcasterMiniApp) {
+    console.log("Detected Farcaster Mini App frame, skipping splash screen.");
+    setGameStarted(true);
+  } else {
+    console.log("NOT inside Farcaster Mini App frame.");
+  }
+}, []);
 
   useEffect(() => {
     let dots = 1;
@@ -94,6 +99,8 @@ export default function ClientComponent() {
     }
   }, [gameStarted]);
 
+console.log("FC Mini App check:", isFarcasterMiniApp, "gameStarted:", gameStarted);
+
   return (
     <>
       <video
@@ -117,13 +124,14 @@ export default function ClientComponent() {
           </p>
           <button
             onClick={() => {
-              setIsLoading(true);
-              setTimeout(() => {
-                setGameStarted(true);
-                window.dispatchEvent(new Event("audio-autoplay-start"));
-                setIsLoading(false);
-              }, 500); // Short delay for smoother transition
-            }}
+  setIsLoading(true);
+  setTimeout(() => {
+    setGameStarted(true);
+    window.dispatchEvent(new Event("audio-autoplay-start"));
+    setIsLoading(false);
+    console.log("ENTER clicked, game started!");
+  }, 500);
+}}
             disabled={!isHydrated || isLoading}
             className={`px-6 py-3 text-white rounded-full text-lg tracking-wider shadow-md transition-all duration-300 flex items-center justify-center gap-2 ${
               isHydrated && !isLoading
