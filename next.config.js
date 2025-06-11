@@ -3,9 +3,6 @@ module.exports = {
   images: {
     domains: ['localhost'],
   },
-};
-// next.config.js
-module.exports = {
   async headers() {
     return [
       {
