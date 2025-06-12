@@ -1,8 +1,5 @@
+// next.config.js
 module.exports = {
-  reactStrictMode: true,
-  images: {
-    domains: ['localhost'],
-  },
   async headers() {
     return [
       {
@@ -17,3 +14,4 @@ module.exports = {
     ];
   },
 };
+
