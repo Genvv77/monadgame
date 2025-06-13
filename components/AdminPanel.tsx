@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { getAccount } from "@wagmi/core";
-import { createWalletClient, custom } from "viem";
+import { createWalletClient, custom, keccak256, toBytes } from "viem";
 import { publicClient, monadTestnet } from "@/lib/viem";
 import { RIDDLE_GAME_ABI, RIDDLE_GAME_ADDRESS } from "@/constants/abi";
 import { toast } from "react-hot-toast";
@@ -29,11 +29,14 @@ const AdminPanel = ({ onRiddleUpdated }: AdminPanelProps) => {
         return;
       }
 
+      // Hash the answer off-chain!
+      const answerHash = keccak256(toBytes(newAnswer));
+
       const { request } = await publicClient.simulateContract({
         address: RIDDLE_GAME_ADDRESS,
         abi: RIDDLE_GAME_ABI,
         functionName: "updateRiddle",
-        args: [newRiddle, newAnswer],
+        args: [newRiddle, answerHash], // <-- Only the hash goes on chain!
         account: account.address,
       });
 
@@ -49,7 +52,7 @@ const AdminPanel = ({ onRiddleUpdated }: AdminPanelProps) => {
 
       toast.dismiss();
       toast.success("🧩 New riddle updated successfully!");
-      onRiddleUpdated(newRiddle); // ✅ Update parent state
+      onRiddleUpdated(newRiddle);
 
       setNewRiddle("");
       setNewAnswer("");
@@ -86,6 +89,5 @@ const AdminPanel = ({ onRiddleUpdated }: AdminPanelProps) => {
 };
 
 export default AdminPanel;
-
 
 

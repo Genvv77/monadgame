@@ -1,29 +1,30 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract RiddleGame {
+contract RiddleGameAuto {
     address public owner;
     string public riddle;
-    bytes32 private answerHash;
+    bytes32 public answerHash;
     address public winner;
     uint256 public pot;
 
-    constructor(string memory _riddle, string memory _answer) payable {
-        owner = msg.sender;
-        riddle = _riddle;
-        answerHash = keccak256(abi.encodePacked(_answer));
-    }
+    event Winner(address winner, uint256 amount);
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Not authorized");
         _;
     }
 
-    function updateRiddle(string memory _riddle, string memory _answer) public onlyOwner {
+    constructor(string memory _riddle, bytes32 _answerHash) payable {
+        owner = msg.sender;
         riddle = _riddle;
-        answerHash = keccak256(abi.encodePacked(_answer));
+        answerHash = _answerHash;
+    }
+
+    function updateRiddle(string memory _riddle, bytes32 _answerHash) public onlyOwner {
+        riddle = _riddle;
+        answerHash = _answerHash;
         winner = address(0);
-        pot = 0;
     }
 
     function guess(string memory _guess) public payable {
@@ -34,8 +35,10 @@ contract RiddleGame {
 
         if (keccak256(abi.encodePacked(_guess)) == answerHash) {
             winner = msg.sender;
-            payable(winner).transfer(pot);
+            uint256 reward = pot;
             pot = 0;
+            payable(msg.sender).transfer(reward);
+            emit Winner(msg.sender, reward);
         }
     }
 
